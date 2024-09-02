@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;     
+            overflow: hidden;  
+        }
+
+        .page {
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: white;
+            border-color: None;
+        }
+
+        .top-bar {
+            display: flex;
+            position: absolute;
+            top: 0;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            background-color: blueviolet;
+        }
+
+        .logo {
+            height: 40px;
+            padding-left: 10px;
+        }
+
+        .extension-name {
+            font-size: 1.25em;
+            color: white;
+            /* padding-right: 50px; */
+            font-weight: bold;
+        }
+
+        .logout {
+            /* background-color: red; */
+            color: white;
+            padding-right: 10px;
+            border: none;
+            cursor: pointer;
+            background: none;
+            font-size: 1em;
+        }
+
+        #checkIpRiskButton {
+            background-color: blueviolet;
+            position: relative;
+            display: flex;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 85px;
+            margin-bottom: 5px;
+
+        }
+
+        #ipRiskScore {
+            margin: 5px;
+            font-style: bold;
+            font-size: 1.15em;
+        }
+
+        #riskTableContainer {
+            width: 250px;
+            max-width: 250px;
+            height: 150px;
+            overflow: auto;
+            border: 1x solid black;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        #riskTable {
+            /* margin: 0px; */
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        #riskTable th, #riskTable td {
+            border: 1px solid gray;
+            padding: 8px;
+        }
+
+        #exportCsvButton {
+            background-color: blueviolet;
+            color: white;
+            position: relative;
+            display: flex;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        #noIpRiskLink {
+            position: relative;
+            display: flex;
+            color: blue;
+            cursor: pointer;
+        }
+
+        #loader {
+            display: none;
+        }
+
+        #loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: none;  /* Start with display none */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;  /* Make sure it's on top */
+        }
+
+        #loader img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page" id="ipRiskPage">
+        <div class="top-bar">
+            <img src="pages/logo.png" alt="Extension Logo" class="logo">
+            <span class="extension-name">IP Risk Checker</span>
+            <button id="logoutButton" class="logout">Logout</button>
+        </div>
+        <button id="checkIpRiskButton">Check IP Risk</button>
+        <p style="font-size: 1.25em; font-weight: bold;">IP Risk Score: <span id="ipRiskScore"></span></p>
+        <div id="riskTableContainer">
+            <table id="riskTable">
+                <thead>
+                    <tr>
+                        <th>Risks Associated</th>
+                        <!-- <th>Risk Severity</th> -->
+                        <!-- <th>Risk Description</th> -->
+                        <!-- <th>Graph Representation</th> -->
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button id="exportCsvButton">Export to CSV</button>
+        <p><a href="www.google.com" id="noIpRiskLink">Get List of Products with No IP Risk</a></p>
+        <div id="loader">
+            <img src="pages/loading.gif" alt="Loading...">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "IP Risk Checker",
+    "version": "1.0",
+    "description": "A Chrome extension to check ip risk of a e-commerce product through keepa API",
+    "action": {
+      "default_popup": "index.html"
+    },
+    "icons": {
+    "16": "pages/logo.png"
+  },
+    "permissions": ["activeTab", "tabs"]
+  }
+  
