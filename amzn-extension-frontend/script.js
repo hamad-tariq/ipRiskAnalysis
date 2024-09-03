@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const asin = url.pathname.split('/dp/')[1].split('/')[0];
 
                 // Make a POST request to the API with the extracted ASIN
-                fetch('http://127.0.0.1:5000/detect_ip_risk', {
+                fetch('https://ipriskanalysis.onrender.comdetect_ip_risk', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
