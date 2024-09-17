@@ -12,7 +12,17 @@ def configure():
     load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # This will enable CORS for all routes
+#CORS(app)  # This will enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "chrome-extension://gmiblmdcdmddknemfolpfogbjedohehl"}})
+
+@app.route('/detect_ip_risk', methods=['GET', 'POST', 'OPTIONS'])
+def your_function():
+    if request.method == 'OPTIONS':
+        # Handle preflight request
+        return '', 200
+    # Handle your logic here
+    return 'Response from server'
+
 
 def detect_ip_risk(buybox_data, sellerid_history, price_history):
     buybox_threshold = 0.2  # 20% change
