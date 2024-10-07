@@ -13,7 +13,7 @@ def configure():
 
 app = Flask(__name__)
 #CORS(app)  # This will enable CORS for all routes
-CORS(app, resources={r"/*": {"origins": "chrome-extension://gmiblmdcdmddknemfolpfogbjedohehl"}})
+CORS(app)
 
 @app.route('/detect_ip_risk', methods=['GET', 'POST', 'OPTIONS'])
 def your_function():
