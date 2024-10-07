@@ -457,6 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Make a POST request to the API with the extracted ASIN
                 fetch('https://ipriskanalysis.onrender.comdetect_ip_risk', {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
