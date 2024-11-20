@@ -392,10 +392,7 @@
 // });
 
 
-//---------------------- Results Integrated Code--------------------
-
 document.addEventListener('DOMContentLoaded', function () {
-
     // Determine which page to load based on the state
     if (localStorage.getItem('login') === 'true') {
         loadPage('iprisk.html');
@@ -451,38 +448,52 @@ document.addEventListener('DOMContentLoaded', function () {
             // Extract ASIN from the current tab's URL
             chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 const tab = tabs[0];
-                const url = new URL(tab.url);
-                const asin = url.pathname.split('/dp/')[1].split('/')[0];
+                try {
+                    const url = new URL(tab.url);
+                    let asin;
+                    if (url.pathname.includes('/dp/')) {
+                        asin = url.pathname.split('/dp/')[1].split('/')[0];
+                    } else if (url.pathname.includes('/gp/product/')) {
+                        asin = url.pathname.split('/gp/product/')[1].split('/')[0];
+                    } else {
+                        throw new Error('ASIN not found in the URL');
+                    }
 
-                // Make a POST request to the API with the extracted ASIN
-                fetch('https://ipriskanalysis.onrender.comdetect_ip_risk', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ asin: asin })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    loader.style.display = 'none';
-                    document.getElementById('ipRiskScore').textContent = data.risk_score;
+                    // Make a POST request to the local Flask API with the extracted ASIN
+                    fetch('http://127.0.0.1:5000/analyze_data', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ asin: asin })
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('API request failed');
+                            return response.json();
+                        })
+                        .then(data => {
+                            loader.style.display = 'none';
+                            document.getElementById('ipRiskScore').textContent = data.total_score;
 
-                    const tableBody = document.querySelector('#riskTable tbody');
-                    tableBody.innerHTML = '';
-                    data.risk_factors.forEach(factor => {
-                        const row = `
-                            <tr>
-                                <td>${factor.description}</td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
-                    });
-                })
-                .catch(error => {
+                            const tableBody = document.querySelector('#riskTable tbody');
+                            tableBody.innerHTML = '';
+                            data.risk_factors.forEach(factor => {
+                                const row = `
+                                    <tr>
+                                        <td>${factor.description}</td>
+                                    </tr>
+                                `;
+                                tableBody.innerHTML += row;
+                            });
+                        })
+                        .catch(error => {
+                            loader.style.display = 'none';
+                            alert(`Error: ${error.message}`);
+                        });
+                } catch (error) {
                     loader.style.display = 'none';
-                    console.error('Error:', error);
-                });
+                    alert('Error parsing ASIN: ' + error.message);
+                }
             });
         } else if (e.target && e.target.id === 'exportCsvButton') {
             const tableBody = document.querySelector('#riskTable tbody');
