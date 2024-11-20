@@ -1,4 +1,4 @@
-﻿blinker==1.8.2
+blinker==1.8.2
 certifi==2024.6.2
 charset-normalizer==3.3.2
 click==8.1.7
@@ -20,3 +20,4 @@ urllib3==2.2.2
 Werkzeug==3.0.3
 python-dotenv==1.0.1
 gunicorn==23.0.0
+
