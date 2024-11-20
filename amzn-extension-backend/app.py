@@ -92,11 +92,22 @@ def analyze_data():
         df_prices['Drop7Days'] = df_prices['OfferPrice'].diff(periods=-336)
         df_prices['LargeDrop7Days'] = (df_prices['Drop7Days'] >= 4) & (df_prices['Drop7Days'] < 7)
         df_prices['ExtraLargeDrop7Days'] = df_prices['Drop7Days'] >= 7
-
+    else:
+        # Add these columns with default values to prevent KeyError
+        df_prices['Drop7Days'] = 0
+        df_prices['LargeDrop7Days'] = False
+        df_prices['ExtraLargeDrop7Days'] = False
+    
     if len(df_prices) >= 96:
         df_prices['Drop2Days'] = df_prices['OfferPrice'].diff(periods=-96)
         df_prices['LargeDrop2Days'] = df_prices['Drop2Days'] >= 4
         df_prices['ExtraLargeDrop2Days'] = df_prices['Drop2Days'] >= 7
+    else:
+        # Add these columns with default values to prevent KeyError
+        df_prices['Drop2Days'] = 0
+        df_prices['LargeDrop2Days'] = False
+        df_prices['ExtraLargeDrop2Days'] = False
+
 
     df_prices['IsSeasonal'] = df_prices['Date'].apply(lambda x: x.month in [10, 11, 12])
     df_prices['SeasonalDrop'] = df_prices['LargeDrop7Days'] & df_prices['IsSeasonal']
@@ -109,7 +120,6 @@ def analyze_data():
         "individual_scores": individual_scores,
         "risk_factors": risk_factors
     }
-
     return jsonify(response)
 
 
